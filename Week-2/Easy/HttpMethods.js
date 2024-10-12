@@ -59,3 +59,43 @@ app.put('/update-resource/:id', (req, res) => {
 app.delete('/delete-resource/:id', (req, res) => {
     const resourceId = req.params.id;
 })
+
+// Response Object--
+
+//Sending Plain Text:
+app.get('/', (req, res) => {
+  res.send('Hello, this is a plain text response!');
+});
+//Sending JSON:
+app.get('/api/data', (req, res) => {
+  const data = { message: 'This is a JSON response.' };
+  res.json(data);
+});
+//Sending HTML:
+app.get('/html', (req, res) => {
+    const htmlContent = '<h1> this is html response </h1>';
+    res.send(htmlContent);
+})
+//Redirecting
+app.get('/redirect', (req, res) => {
+    res.redirect('/new-location');
+})
+//Sending Status Codes:
+app.get('/not-found', (req, res) => {
+    res.status(404).send('page is not found');
+})
+
+//Sending Files:
+const path = require('path');
+app.get('/file', (req, res) => {
+    const filePath = path.join(__dirname, 'files', 'example.txt');
+    res.sendFile(filePath);
+});
+//Setting Headers:
+app.get('/custom-header', (req, res) => {
+    res.set('X-custom-Header' , 'Custom Header Value');
+    res.send('Response with a custom header');
+})
+
+
+
