@@ -44,3 +44,12 @@ app.post('/add-content', (req, res) =>{
     
     res.status(201).json({message: 'Content added successfully'});
 })
+
+
+//PUT method--
+
+// put mmethod for updating a resouces--
+
+app.put('/update-resource/:id', (req, res) => {
+    const resourceId = req.params.id;
+})
