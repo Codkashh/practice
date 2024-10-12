@@ -53,3 +53,9 @@ app.post('/add-content', (req, res) =>{
 app.put('/update-resource/:id', (req, res) => {
     const resourceId = req.params.id;
 })
+
+//DELETE method---
+
+app.delete('/delete-resource/:id', (req, res) => {
+    const resourceId = req.params.id;
+})
