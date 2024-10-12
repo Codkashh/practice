@@ -97,5 +97,60 @@ app.get('/custom-header', (req, res) => {
     res.send('Response with a custom header');
 })
 
+//Serving Routes---
+
+const express = require('express');
+const appp = express();
+const portt = 5000;
+
+
+// get route
+appp.get('/', (req, res) => {
+    res.send('Hello from GET route!');
+  });
+  
+  // post route
+  appp.post('/add', (req, res) => {
+    res.send('Hello from POST route!');
+  });
+  
+  // PUT route - updation
+  appp.put('/put/:id', (req, res) => {
+    res.send('Hello from PUT route!');
+  });
+  
+  //DELETE route 
+  appp.delete('/delete/:id', (req, res) => {
+    res.send('Hello from DELETE route!');
+  });
+  
+  appp.listen(portt, () => {
+    console.log(`Server is running on <http://localhost>:${portt}`);
+  });
+
+// JSON response ---
+
+const express = require('express');
+const app = express();
+const port = 3000;
+
+app.get('/get-json', (req, res) => {
+  // Create an object to be sent as JSON
+  const responseData = {
+    message: 'This is a JSON response',
+    data: {
+      key1: 'value1',
+      key2: 'value2',
+    },
+  };
+
+  // Send the JSON response
+  res.json(responseData);
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on <http://localhost>:${port}`);
+});
+
 
 
