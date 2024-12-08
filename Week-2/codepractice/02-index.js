@@ -15,3 +15,7 @@ app.get('/', (req, res) => {
     const ans = sum(n);
     res.send("Hi there Sum is ready:" + ans);
 })
+
+app.listen(3000);
+
+// open browser - localhost:3000/?n=20  (after ? - there is query parameters)
