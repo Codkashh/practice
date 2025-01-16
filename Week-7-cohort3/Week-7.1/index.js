@@ -1,7 +1,9 @@
 const express = require("express");
 const { UserModel, TodoModel } = require("./db");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 const JWT_SECRET = "akash"
+mongoose.connect("mongodb+srv://aakashsharma162000:9Mwbou3ZNxS4x00z@cluster0.tld8z.mongodb.net/todo-app");
 const app = express();
 app.use(express.json());
 
@@ -10,46 +12,71 @@ app.post("/signup", async function(req, res) {
     const password = req.body.password;
     const name = req.body.name;
 
-    await UserModel.insert({
-        email:email,
-        password:password,
-        name:name
-    })
+    await UserModel.create({
+        email: email,
+        password: password,
+        name: name
+    });
     
     res.json({
-        message:"You are Logged In"
+        message: "You are signed up"
     })
 });
 
-app.post("/signin", function(req, res) {
+
+app.post("/signin", async function(req, res) {
     const email = req.body.email;
-    const password = req.body.email;
+    const password = req.body.password;
 
-    const user = UserModel.findOne({
+    const response = await UserModel.findOne({
         email: email,
-        password: password
-    })
+        password: password,
+    });
 
-    if(user){
+    if (response) {
         const token = jwt.sign({
-            id: user._id
-        })
+            id: response._id.toString()
+        }, JWT_SECRET)
+
         res.json({
-            token: token
-        });
-    } else{
+            token
+        })
+    } else {
         res.status(403).json({
-            message: "Incorrect Credentials"
+            message: "Incorrect creds"
         })
     }
 });
 
-app.post("/todo", function(req, res) {
-    
+function auth(req, res, next){
+    const token = req.header.token;
+
+    const decodedData = jwt.verify(token, JWT_SECRET);
+
+    if(decodedData){
+        req.userId = decodedData.id;
+        next();
+    } else{
+        res.status(403).json({
+            message:"Wrong credentials"
+        })
+    }
+}
+
+app.post("/todo", auth, function(req, res) {
+    const userId = req.userId;
+
+    res.json({
+        userId: userId
+    })
 });
 
-app.get("/todos", function(req, res) {
-    
+app.get("/todos", auth, function(req, res) {
+    const userId = req.userId;
+
+    res.json({
+        userId: userId
+    }) 
 })
 
 app.listen(3000);
