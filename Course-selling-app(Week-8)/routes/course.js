@@ -7,6 +7,7 @@
 // Import Router from express module
 const { Router } = require("express");
 
+const { courseModel } = require("../db");
 
 // Create a new Router instance for course routes
 const courseRouter = Router();
