@@ -85,27 +85,41 @@ adminRouter.get("/course",adminMiddleware ,async function (req, res) {
 adminRouter.put("/course",async function (req, res) {
     const adminId = req.userId;
     // Get title, description, imageUrl, and price from the request body
-    const { title, description, imageUrl, price } = req.body;
+    const { title, description, imageUrl, price, courseId } = req.body;
 
     // Create a new course with the given title, description, imageUrl, price, and creatorId
     const course = await courseModel.updateOne({
+        _id: courseId,
+        creatorId: adminId
+    },
+        {
         title,
         description,
         imageUrl,
         price,
-        creatorId: adminId,
     });
 
     // Respond with a success message if the course is created successfully
-    res.status(201).json({
-        message: "Course created!",
+    res.json({
+        message: "Course Updated!",
         courseId: course._id,
     });
 });
 
-adminRouter.post("/course", function (req, res) {
+adminRouter.post("/course",async function (req, res) {
+    const adminId = req.userId;
+    // Get title, description, imageUrl, and price from the request body
+    const { title, description, imageUrl, price, courseId } = req.body;
+
+    // Create a new course with the given title, description, imageUrl, price, and creatorId
+    const course = await courseModel.find({
+        creatorId: adminId
+    });
+
+    // Respond with a success message if the course is created successfully
     res.json({
-        message: "Purchases endpoint!",
+        message: "Course Updated!",
+        course
     });
 });
 
