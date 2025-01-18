@@ -6,8 +6,8 @@
 // Import Router from express module
 const { Router } = require("express");
 const jwt = require("jsonwebtoken");
-const JWT_ADMIN_SECRET = "asasasasas";
-
+const { JWT_ADMIN_SECRET } = require("../config");
+const { adminMiddleware } = require("../middleware/admin");
 // Create a new Router instance for admin routes
 const adminRouter = Router();
 
@@ -61,9 +61,24 @@ adminRouter.post("/signin",async function (req, res) {
 });
 
 // Define the admin routes for purchases made by the admin
-adminRouter.get("/course", function (req, res) {
-    res.json({
-        message: "Purchases endpoint!",
+adminRouter.get("/course",adminMiddleware ,async function (req, res) {
+    const adminId = req.userId;
+    // Get title, description, imageUrl, and price from the request body
+    const { title, description, imageUrl, price } = req.body;
+
+    // Create a new course with the given title, description, imageUrl, price, and creatorId
+    const course = await courseModel.create({
+        title,
+        description,
+        imageUrl,
+        price,
+        creatorId: adminId,
+    });
+
+    // Respond with a success message if the course is created successfully
+    res.status(201).json({
+        message: "Course created!",
+        courseId: course._id,
     });
 });
 

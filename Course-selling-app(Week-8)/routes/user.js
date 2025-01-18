@@ -7,8 +7,7 @@
 const { Router } = require("express");
 const { userModel } = require("../db");
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = "asasas";
-
+const { JWT_SECRET } = require("../config");
 // Create a new Router instance for user routes
 const userRouter = Router();
 
